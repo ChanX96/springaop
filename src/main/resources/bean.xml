@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+    
+<!--    配置spring创建容器时要扫描的包-->
+    <context:component-scan base-package="com.chanx"></context:component-scan>
+
+<!--&lt;!&ndash;    配置spring的ioc，把service对象配置进来&ndash;&gt;-->
+<!--    <bean id="accountService" class="com.chanx.service.impl.AccountServiceImpl"></bean>-->
+
+<!--    spring中基于XML的AOP配置步骤
+            1. 把通知Bean也交给spring来管理
+            2. 使用aop:config标签表明开始AOP的配置
+            3. 使用aop:aspect标签表明配置切面
+                id属性: 给切面提供一个唯一标识
+                ref属性: 指定通知类bean的Id
+            4. 在aio:aspect标签内部使用对应的标签来配置通知的类型
+                我们现在的示例是让printLog在切入点方法之前执行，所以是前置通知aop:before
+                    method属性: 用于指定logger类中哪个方法是前置通知
+                    pointcut属性: 用于指定切入点表达式，该表达式的含义是对业务层中哪些方法增强
+                切入点表达式的写法:
+                    关键字: execution(表达式)
+                    表达式:
+                        访问修饰符 返回值 包名.类名.方法名(参数列表)
+                    标准的表达式写法:
+                        public void com.chanx.service.impl.AccountServiceImpl.saveAccount()
+                    访问修饰符可以省略:
+                        void com.chanx.service.impl.AccountServiceImpl.saveAccount()
+                    返回值可以使用通配符表示任意返回值:
+                        * com.chanx.service.impl.AccountServiceImpl.saveAccount()
+                    包名可以使用通配符表示任意包，但是有几级包就需要些几个*.:
+                        * *.*.*.*.AccountServiceImpl.saveAccount()
+                    包名可以使用..表示当前包或者子包:
+                        * *..AccountServiceImpl.saveAccount()
+                    类名和方法名都可以使用*表示统配
+                        * *..*.*()
+                    参数列表:
+                        可以直接写数据类型:
+                            基本类型可以写名称               int
+                            引用类型可以行包名.类名的形式     java.lang.String
+                        可以使用通配符表示任意类型，但必须有参数
+                        可以使用..表示有无参数均可，有参数可以是任意类型
+                    全通配写法:
+                        * *..*.*(..)
+
+                    实际开发中切入点表达式的通常写法:
+                        切到业务层实现类下的所有方法
+                            * com.chanx.service.impl.*.*(..)
+-->
+
+<!--    配置Logger类-->
+<!--    <bean id="logger" class="com.chanx.utils.Logger"></bean>-->
+
+<!--    配置spring开启aop的支持-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+<!--&lt;!&ndash;    配置AOP&ndash;&gt;-->
+<!--    <aop:config>-->
+<!--        <aop:pointcut id="pt1" expression="execution(* *..*.*(..))"/>-->
+<!--&lt;!&ndash;        配置切面&ndash;&gt;-->
+<!--        <aop:aspect id="logAdvice" ref="logger">-->
+<!--&lt;!&ndash;            配置前置通知: 在切入点方法前执行&ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:before method="beforePrintLog" pointcut-ref="pt1"></aop:before>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            配置后置通知: 在切入点方法后执行&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:after-returning method="afterReturningPrintLog" pointcut-ref="pt1"></aop:after-returning>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            配置异常通知: 在切入点方法产生异常之后执行&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:after-throwing method="afterThrowingPrintLog" pointcut-ref="pt1"></aop:after-throwing>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            配置后置通知: 无论切入点方法是否执行它都会在其后面执行&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:after method="afterPrintLog" pointcut-ref="pt1"></aop:after>&ndash;&gt;-->
+<!--&lt;!&ndash;            配置切入点表达式 id用于指定表达式的唯一标志，expression用于指定表达式内容，此标签卸载aop:aspect内部只能在当前切面-->
+<!--                使用。它还可以卸载aop:aspect外面，此时标称了所有切面可用，但必须在切面之前。-->
+<!--&ndash;&gt;-->
+<!--&lt;!&ndash;            配置环绕通知，详细通知再Logger类中&ndash;&gt;-->
+<!--            <aop:around method="arountPrintLog" pointcut-ref="pt1"></aop:around>-->
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+</beans>
